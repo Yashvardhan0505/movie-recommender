@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What to watch next: a two-stage movie recommender</title>
-<meta name="description" content="A two-stage recommender trained on 1,000,209 MovieLens ratings. Five quick models shortlist about 187 movies for each person, then a gradient-boosted model reranks them. On ratings made after the training cutoff, its top 10 found 6.6% of the movies people went on to rate, against 3.9% for a most-popular list.">
+<meta name="description" content="A two-stage recommender trained on 1,000,209 MovieLens ratings. Five quick models shortlist about 187 movies for each person, then a gradient-boosted model reranks them. On ratings made after the training cutoff, its top 10 found 6.4% of the movies people went on to rate, against 3.9% for a most-popular list.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
@@ -230,7 +230,7 @@ footer p + p { margin-top: 0.5rem; }
 <header class="hero wrap">
   
   <h1>What to watch next</h1>
-  <p class="lead">A two-stage recommender trained on 1,000,209 MovieLens ratings. Five quick models shortlist about 187 movies for each person, then a gradient-boosted model reranks them. On ratings made after the training cutoff, its top 10 found 6.6% of the movies people went on to rate, against 3.9% for a most-popular list.</p>
+  <p class="lead">A two-stage recommender trained on 1,000,209 MovieLens ratings. Five quick models shortlist about 187 movies for each person, then a gradient-boosted model reranks them. On ratings made after the training cutoff, its top 10 found 6.4% of the movies people went on to rate, against 3.9% for a most-popular list.</p>
   <p class="links"><a href="https://github.com/Yashvardhan0505/movie-recommender">Code on GitHub</a> <a href="#results">How it's measured</a></p>
 </header>
 
@@ -269,7 +269,7 @@ footer p + p { margin-top: 0.5rem; }
 
 <section class="results wrap" id="results" aria-labelledby="results-title">
   <h2 id="results-title">How well does it work?</h2>
-  <p>Every model learned only from ratings made before 29 December 2000. Then it had to predict what 1,180 returning users rated after that, about 81 movies each. Recall@10 is the share of those movies that made a person&#x27;s top 10. NDCG@10 also gives more credit for ranking them near the top. The two-stage model&#x27;s recall is 1.7× the baseline&#x27;s, and the best single model, EASE, reaches 4.9% on its own.</p>
+  <p>Every model learned only from ratings made before 29 December 2000. Then it had to predict what 1,180 returning users rated after that, about 81 movies each. Recall@10 is the share of those movies that made a person&#x27;s top 10. NDCG@10 also gives more credit for ranking them near the top. The two-stage model&#x27;s recall is 1.6× the baseline&#x27;s, and the best single model, EASE, reaches 4.9% on its own.</p>
 
   <div class="block">
     <h3>Returning users</h3>
@@ -277,49 +277,49 @@ footer p + p { margin-top: 0.5rem; }
     <div class="chart multiples" role="group" aria-label="Recall and NDCG for each method">
 <span class="head" aria-hidden="true"></span><span class="head">Recall@10</span><span class="head">NDCG@10</span>
 <span class="label is-accent">Two-stage: retrieve + rerank</span>
-<span class="track is-accent"><span class="cell" role="img" tabindex="0" aria-label="Two-stage: retrieve + rerank, recall at 10: 6.6%" data-tip="Two-stage: retrieve + rerank
-Recall@10 6.6%
-1.7× the most-popular baseline
-77% of people had at least one hit"><span class="bar" style="--f:1.0000"></span><span class="val">6.6%</span></span></span>
-<span class="track is-accent"><span class="cell" role="img" tabindex="0" aria-label="Two-stage: retrieve + rerank, NDCG at 10: 0.292" data-tip="Two-stage: retrieve + rerank
-NDCG@10 0.292"><span class="bar" style="--f:1.0000"></span><span class="val">0.292</span></span></span>
+<span class="track is-accent"><span class="cell" role="img" tabindex="0" aria-label="Two-stage: retrieve + rerank, recall at 10: 6.4%" data-tip="Two-stage: retrieve + rerank
+Recall@10 6.4%
+1.6× the most-popular baseline
+78% of people had at least one hit"><span class="bar" style="--f:1.0000"></span><span class="val">6.4%</span></span></span>
+<span class="track is-accent"><span class="cell" role="img" tabindex="0" aria-label="Two-stage: retrieve + rerank, NDCG at 10: 0.290" data-tip="Two-stage: retrieve + rerank
+NDCG@10 0.290"><span class="bar" style="--f:1.0000"></span><span class="val">0.290</span></span></span>
 <span class="label">Most popular, last 30 days</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular, last 30 days, recall at 10: 5.0%" data-tip="Most popular, last 30 days
 Recall@10 5.0%
 1.3× the most-popular baseline
-73% of people had at least one hit"><span class="bar" style="--f:0.7611"></span><span class="val">5.0%</span></span></span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular, last 30 days, NDCG at 10: 0.274" data-tip="Most popular, last 30 days
-NDCG@10 0.274"><span class="bar" style="--f:0.9379"></span><span class="val">0.274</span></span></span>
+73% of people had at least one hit"><span class="bar" style="--f:0.7806"></span><span class="val">5.0%</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular, last 30 days, NDCG at 10: 0.273" data-tip="Most popular, last 30 days
+NDCG@10 0.273"><span class="bar" style="--f:0.9429"></span><span class="val">0.273</span></span></span>
 <span class="label">EASE</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="EASE, recall at 10: 4.9%" data-tip="EASE
 Recall@10 4.9%
 1.3× the most-popular baseline
-69% of people had at least one hit"><span class="bar" style="--f:0.7513"></span><span class="val">4.9%</span></span></span>
+69% of people had at least one hit"><span class="bar" style="--f:0.7751"></span><span class="val">4.9%</span></span></span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="EASE, NDCG at 10: 0.256" data-tip="EASE
-NDCG@10 0.256"><span class="bar" style="--f:0.8772"></span><span class="val">0.256</span></span></span>
+NDCG@10 0.256"><span class="bar" style="--f:0.8823"></span><span class="val">0.256</span></span></span>
 <span class="label">Matrix factorisation (SVD)</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Matrix factorisation (SVD), recall at 10: 4.4%" data-tip="Matrix factorisation (SVD)
 Recall@10 4.4%
 1.1× the most-popular baseline
-67% of people had at least one hit"><span class="bar" style="--f:0.6740"></span><span class="val">4.4%</span></span></span>
+67% of people had at least one hit"><span class="bar" style="--f:0.6954"></span><span class="val">4.4%</span></span></span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Matrix factorisation (SVD), NDCG at 10: 0.243" data-tip="Matrix factorisation (SVD)
-NDCG@10 0.243"><span class="bar" style="--f:0.8314"></span><span class="val">0.243</span></span></span>
+NDCG@10 0.243"><span class="bar" style="--f:0.8362"></span><span class="val">0.243</span></span></span>
 <span class="label">Item-to-item</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Item-to-item, recall at 10: 4.0%" data-tip="Item-to-item
 Recall@10 4.0%
 1.0× the most-popular baseline
-65% of people had at least one hit"><span class="bar" style="--f:0.6119"></span><span class="val">4.0%</span></span></span>
+65% of people had at least one hit"><span class="bar" style="--f:0.6313"></span><span class="val">4.0%</span></span></span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Item-to-item, NDCG at 10: 0.256" data-tip="Item-to-item
-NDCG@10 0.256"><span class="bar" style="--f:0.8788"></span><span class="val">0.256</span></span></span>
+NDCG@10 0.256"><span class="bar" style="--f:0.8840"></span><span class="val">0.256</span></span></span>
 <span class="label">Most popular (baseline)</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular (baseline), recall at 10: 3.9%" data-tip="Most popular (baseline)
 Recall@10 3.9%
 1.0× the most-popular baseline
-67% of people had at least one hit"><span class="bar" style="--f:0.5997"></span><span class="val">3.9%</span></span></span>
+67% of people had at least one hit"><span class="bar" style="--f:0.6186"></span><span class="val">3.9%</span></span></span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular (baseline), NDCG at 10: 0.254" data-tip="Most popular (baseline)
-NDCG@10 0.254"><span class="bar" style="--f:0.8704"></span><span class="val">0.254</span></span></span>
+NDCG@10 0.254"><span class="bar" style="--f:0.8757"></span><span class="val">0.254</span></span></span>
 </div>
-    <details class="numbers"><summary>Show the numbers</summary><div class="scroll"><table><thead><tr><th scope="col">Method</th><th scope="col" class=num>Recall@10</th><th scope="col" class=num>NDCG@10</th><th scope="col" class=num>Hit rate@10</th><th scope="col" class=num>Precision@10</th><th scope="col" class=num>Catalog shown</th></tr></thead><tbody><tr><th scope="row">Two-stage: retrieve + rerank</th><td class="num">0.0657</td><td class="num">0.2917</td><td class="num">0.768</td><td class="num">0.265</td><td class="num">22.3%</td></tr><tr><th scope="row">Most popular, last 30 days</th><td class="num">0.0500</td><td class="num">0.2736</td><td class="num">0.729</td><td class="num">0.255</td><td class="num">3.3%</td></tr><tr><th scope="row">EASE</th><td class="num">0.0494</td><td class="num">0.2559</td><td class="num">0.695</td><td class="num">0.238</td><td class="num">24.2%</td></tr><tr><th scope="row">Matrix factorisation (SVD)</th><td class="num">0.0443</td><td class="num">0.2425</td><td class="num">0.675</td><td class="num">0.225</td><td class="num">23.8%</td></tr><tr><th scope="row">Item-to-item</th><td class="num">0.0402</td><td class="num">0.2564</td><td class="num">0.653</td><td class="num">0.243</td><td class="num">7.8%</td></tr><tr><th scope="row">Most popular (baseline)</th><td class="num">0.0394</td><td class="num">0.2539</td><td class="num">0.671</td><td class="num">0.239</td><td class="num">3.8%</td></tr></tbody></table></div></details>
+    <details class="numbers"><summary>Show the numbers</summary><div class="scroll"><table><thead><tr><th scope="col">Method</th><th scope="col" class=num>Recall@10</th><th scope="col" class=num>NDCG@10</th><th scope="col" class=num>Hit rate@10</th><th scope="col" class=num>Precision@10</th><th scope="col" class=num>Catalog shown</th></tr></thead><tbody><tr><th scope="row">Two-stage: retrieve + rerank</th><td class="num">0.0637</td><td class="num">0.2900</td><td class="num">0.777</td><td class="num">0.262</td><td class="num">21.0%</td></tr><tr><th scope="row">Most popular, last 30 days</th><td class="num">0.0497</td><td class="num">0.2734</td><td class="num">0.727</td><td class="num">0.255</td><td class="num">3.3%</td></tr><tr><th scope="row">EASE</th><td class="num">0.0494</td><td class="num">0.2559</td><td class="num">0.695</td><td class="num">0.238</td><td class="num">24.2%</td></tr><tr><th scope="row">Matrix factorisation (SVD)</th><td class="num">0.0443</td><td class="num">0.2425</td><td class="num">0.675</td><td class="num">0.225</td><td class="num">23.8%</td></tr><tr><th scope="row">Item-to-item</th><td class="num">0.0402</td><td class="num">0.2564</td><td class="num">0.653</td><td class="num">0.243</td><td class="num">7.8%</td></tr><tr><th scope="row">Most popular (baseline)</th><td class="num">0.0394</td><td class="num">0.2540</td><td class="num">0.671</td><td class="num">0.239</td><td class="num">3.8%</td></tr></tbody></table></div></details>
   </div>
 
   <div class="pair">
@@ -346,11 +346,11 @@ holds 21.0% of the next movies"><span class="bar" style="--f:0.5404"></span><spa
 <span class="label">Most popular, last 30 days (50)</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular, last 30 days (50): 16%" data-tip="Most popular, last 30 days
 50 candidates per person
-holds 16.1% of the next movies"><span class="bar" style="--f:0.4139"></span><span class="val">16%</span></span></span>
+holds 16.1% of the next movies"><span class="bar" style="--f:0.4138"></span><span class="val">16%</span></span></span>
 <span class="label">Most popular (baseline) (50)</span>
 <span class="track"><span class="cell" role="img" tabindex="0" aria-label="Most popular (baseline) (50): 14%" data-tip="Most popular (baseline)
 50 candidates per person
-holds 14.3% of the next movies"><span class="bar" style="--f:0.3684"></span><span class="val">14%</span></span></span>
+holds 14.3% of the next movies"><span class="bar" style="--f:0.3685"></span><span class="val">14%</span></span></span>
 </div>
       <details class="numbers"><summary>Show the numbers</summary><div class="scroll"><table><thead><tr><th scope="col">Shortlist from</th><th scope="col" class=num>Candidates per person</th><th scope="col" class=num>Share of next movies held</th></tr></thead><tbody><tr><th scope="row">All five combined</th><td class="num">187</td><td class="num">0.388</td></tr><tr><th scope="row">EASE</th><td class="num">100</td><td class="num">0.250</td></tr><tr><th scope="row">Matrix factorisation (SVD)</th><td class="num">100</td><td class="num">0.239</td></tr><tr><th scope="row">Item-to-item</th><td class="num">100</td><td class="num">0.210</td></tr><tr><th scope="row">Most popular, last 30 days</th><td class="num">50</td><td class="num">0.161</td></tr><tr><th scope="row">Most popular (baseline)</th><td class="num">50</td><td class="num">0.143</td></tr></tbody></table></div></details>
     </div>
@@ -383,37 +383,37 @@ NDCG@10 0.546"><span class="bar" style="--f:0.9077"></span><span class="val">5.8
     <p>How much the reranker&#x27;s NDCG@10 drops when one signal is shuffled between users or movies. The bigger the drop, the more it relies on that signal.</p>
     <div class="chart single" role="group" aria-label="Drop in NDCG when each signal is shuffled">
 <span class="label">Popular with people of the same age and gender</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Popular with people of the same age and gender: 0.118" data-tip="Popular with people of the same age and gender
-NDCG@10 drops by 0.1176 when shuffled"><span class="bar" style="--f:1.0000"></span><span class="val">0.118</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Popular with people of the same age and gender: 0.101" data-tip="Popular with people of the same age and gender
+NDCG@10 drops by 0.1005 when shuffled"><span class="bar" style="--f:1.0000"></span><span class="val">0.101</span></span></span>
 <span class="label">Movie: years since release</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Movie: years since release: 0.094" data-tip="Movie: years since release
-NDCG@10 drops by 0.0940 when shuffled"><span class="bar" style="--f:0.7995"></span><span class="val">0.094</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Movie: years since release: 0.088" data-tip="Movie: years since release
+NDCG@10 drops by 0.0881 when shuffled"><span class="bar" style="--f:0.8764"></span><span class="val">0.088</span></span></span>
 <span class="label">Movie: average rating</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Movie: average rating: 0.041" data-tip="Movie: average rating
-NDCG@10 drops by 0.0408 when shuffled"><span class="bar" style="--f:0.3467"></span><span class="val">0.041</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Movie: average rating: 0.038" data-tip="Movie: average rating
+NDCG@10 drops by 0.0379 when shuffled"><span class="bar" style="--f:0.3768"></span><span class="val">0.038</span></span></span>
 <span class="label">Movie: times rated</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Movie: times rated: 0.032" data-tip="Movie: times rated
-NDCG@10 drops by 0.0318 when shuffled"><span class="bar" style="--f:0.2706"></span><span class="val">0.032</span></span></span>
-<span class="label">Genre match with the user&#x27;s history</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Genre match with the user&#x27;s history: 0.010" data-tip="Genre match with the user&#x27;s history
-NDCG@10 drops by 0.0096 when shuffled"><span class="bar" style="--f:0.0820"></span><span class="val">0.010</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Movie: times rated: 0.022" data-tip="Movie: times rated
+NDCG@10 drops by 0.0218 when shuffled"><span class="bar" style="--f:0.2172"></span><span class="val">0.022</span></span></span>
 <span class="label">Rank in SVD</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Rank in SVD: 0.009" data-tip="Rank in SVD
-NDCG@10 drops by 0.0089 when shuffled"><span class="bar" style="--f:0.0756"></span><span class="val">0.009</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Rank in SVD: 0.013" data-tip="Rank in SVD
+NDCG@10 drops by 0.0129 when shuffled"><span class="bar" style="--f:0.1282"></span><span class="val">0.013</span></span></span>
 <span class="label">User: days since first rating</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="User: days since first rating: 0.008" data-tip="User: days since first rating
-NDCG@10 drops by 0.0079 when shuffled"><span class="bar" style="--f:0.0674"></span><span class="val">0.008</span></span></span>
-<span class="label">Rank in EASE</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Rank in EASE: 0.008" data-tip="Rank in EASE
-NDCG@10 drops by 0.0078 when shuffled"><span class="bar" style="--f:0.0665"></span><span class="val">0.008</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="User: days since first rating: 0.011" data-tip="User: days since first rating
+NDCG@10 drops by 0.0109 when shuffled"><span class="bar" style="--f:0.1084"></span><span class="val">0.011</span></span></span>
+<span class="label">EASE score</span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="EASE score: 0.011" data-tip="EASE score
+NDCG@10 drops by 0.0106 when shuffled"><span class="bar" style="--f:0.1050"></span><span class="val">0.011</span></span></span>
+<span class="label">SVD score</span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="SVD score: 0.006" data-tip="SVD score
+NDCG@10 drops by 0.0062 when shuffled"><span class="bar" style="--f:0.0621"></span><span class="val">0.006</span></span></span>
 <span class="label">User: occupation</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="User: occupation: 0.008" data-tip="User: occupation
-NDCG@10 drops by 0.0078 when shuffled"><span class="bar" style="--f:0.0662"></span><span class="val">0.008</span></span></span>
-<span class="label">Item-to-item score</span>
-<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Item-to-item score: 0.007" data-tip="Item-to-item score
-NDCG@10 drops by 0.0067 when shuffled"><span class="bar" style="--f:0.0571"></span><span class="val">0.007</span></span></span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="User: occupation: 0.006" data-tip="User: occupation
+NDCG@10 drops by 0.0056 when shuffled"><span class="bar" style="--f:0.0554"></span><span class="val">0.006</span></span></span>
+<span class="label">Genre match with the user&#x27;s history</span>
+<span class="track"><span class="cell" role="img" tabindex="0" aria-label="Genre match with the user&#x27;s history: 0.004" data-tip="Genre match with the user&#x27;s history
+NDCG@10 drops by 0.0045 when shuffled"><span class="bar" style="--f:0.0445"></span><span class="val">0.004</span></span></span>
 </div>
-    <details class="numbers"><summary>Show the numbers</summary><div class="scroll"><table><thead><tr><th scope="col">Signal</th><th scope="col">Feature</th><th scope="col" class=num>NDCG@10 drop</th></tr></thead><tbody><tr><th scope="row">Popular with people of the same age and gender</th><td class="num"><code>segment_share</code></td><td class="num">0.1176</td></tr><tr><th scope="row">Movie: years since release</th><td class="num"><code>item_age</code></td><td class="num">0.0940</td></tr><tr><th scope="row">Movie: average rating</th><td class="num"><code>item_avg_rating</code></td><td class="num">0.0408</td></tr><tr><th scope="row">Movie: times rated</th><td class="num"><code>item_log_pop</code></td><td class="num">0.0318</td></tr><tr><th scope="row">Genre match with the user&#x27;s history</th><td class="num"><code>genre_affinity</code></td><td class="num">0.0096</td></tr><tr><th scope="row">Rank in SVD</th><td class="num"><code>svd_rank</code></td><td class="num">0.0089</td></tr><tr><th scope="row">User: days since first rating</th><td class="num"><code>user_days_active</code></td><td class="num">0.0079</td></tr><tr><th scope="row">Rank in EASE</th><td class="num"><code>ease_rank</code></td><td class="num">0.0078</td></tr><tr><th scope="row">User: occupation</th><td class="num"><code>occupation</code></td><td class="num">0.0078</td></tr><tr><th scope="row">Item-to-item score</th><td class="num"><code>itemcf_score</code></td><td class="num">0.0067</td></tr><tr><th scope="row">Rank in item-to-item</th><td class="num"><code>itemcf_rank</code></td><td class="num">0.0030</td></tr><tr><th scope="row">User: how mainstream their movies are</th><td class="num"><code>user_mainstream</code></td><td class="num">0.0024</td></tr></tbody></table></div></details>
+    <details class="numbers"><summary>Show the numbers</summary><div class="scroll"><table><thead><tr><th scope="col">Signal</th><th scope="col">Feature</th><th scope="col" class=num>NDCG@10 drop</th></tr></thead><tbody><tr><th scope="row">Popular with people of the same age and gender</th><td class="num"><code>segment_share</code></td><td class="num">0.1005</td></tr><tr><th scope="row">Movie: years since release</th><td class="num"><code>item_age</code></td><td class="num">0.0881</td></tr><tr><th scope="row">Movie: average rating</th><td class="num"><code>item_avg_rating</code></td><td class="num">0.0379</td></tr><tr><th scope="row">Movie: times rated</th><td class="num"><code>item_log_pop</code></td><td class="num">0.0218</td></tr><tr><th scope="row">Rank in SVD</th><td class="num"><code>svd_rank</code></td><td class="num">0.0129</td></tr><tr><th scope="row">User: days since first rating</th><td class="num"><code>user_days_active</code></td><td class="num">0.0109</td></tr><tr><th scope="row">EASE score</th><td class="num"><code>ease_score</code></td><td class="num">0.0106</td></tr><tr><th scope="row">SVD score</th><td class="num"><code>svd_score</code></td><td class="num">0.0062</td></tr><tr><th scope="row">User: occupation</th><td class="num"><code>occupation</code></td><td class="num">0.0056</td></tr><tr><th scope="row">Genre match with the user&#x27;s history</th><td class="num"><code>genre_affinity</code></td><td class="num">0.0045</td></tr><tr><th scope="row">Item-to-item score</th><td class="num"><code>itemcf_score</code></td><td class="num">0.0036</td></tr><tr><th scope="row">Number of models proposing it</th><td class="num"><code>n_sources</code></td><td class="num">0.0034</td></tr></tbody></table></div></details>
   </div>
 </section>
 

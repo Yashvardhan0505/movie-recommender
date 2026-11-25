@@ -9,19 +9,19 @@ Five fast models each shortlist movies for a person, then a gradient-boosted rer
 <!-- results:start -->
 | Method | Recall@10 | NDCG@10 |
 |---|---:|---:|
-| **Two-stage: retrieve + rerank** | 0.0657 | 0.2917 |
-| Most popular, last 30 days | 0.0500 | 0.2736 |
+| **Two-stage: retrieve + rerank** | 0.0637 | 0.2900 |
+| Most popular, last 30 days | 0.0497 | 0.2734 |
 | EASE | 0.0494 | 0.2559 |
 | Matrix factorisation (SVD) | 0.0443 | 0.2425 |
 | Item-to-item | 0.0402 | 0.2564 |
-| Most popular (baseline) | 0.0394 | 0.2539 |
+| Most popular (baseline) | 0.0394 | 0.2540 |
 
 Returning users: 1,180, scored on everything they rated after 2000-12-29.
 New users (29, no history): popular with their age group and gender Recall@10 0.0635, against 0.0577 for most popular overall.
 
 Resume line, with these numbers:
 
-> Built a two-stage movie recommender on MovieLens 1M (1,000,209 ratings): five retrieval models (two popularity lists, item-to-item, SVD and EASE) shortlist candidates and a gradient-boosted reranker orders them. On a time-based split it reaches Recall@10 0.066 and NDCG@10 0.292, 1.7× a most-popular baseline, and serves new users from age and gender segments (1.1× the baseline's recall for them).
+> Built a two-stage movie recommender on MovieLens 1M (1,000,209 ratings): five retrieval models (two popularity lists, item-to-item, SVD and EASE) shortlist candidates and a gradient-boosted reranker orders them. On a time-based split it reaches Recall@10 0.064 and NDCG@10 0.290, 1.6× a most-popular baseline, and serves new users from age and gender segments (1.1× the baseline's recall for them).
 
 _Updated 2026-11-25. Full tables: [results/metrics.md](results/metrics.md)._
 <!-- results:end -->

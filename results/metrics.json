@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T23:34+00:00",
+  "generated_at": "2026-11-25T23:42+00:00",
   "note": "",
   "k": 10,
   "dataset": {
@@ -24,7 +24,7 @@
       "label": "Most popular (baseline)",
       "users": 1180,
       "recall": 0.03941795185954878,
-      "ndcg": 0.2538967781991909,
+      "ndcg": 0.25397069215631574,
       "hit": 0.6711864406779661,
       "precision": 0.23872881355932202,
       "coverage": 0.03785732680916817
@@ -33,11 +33,11 @@
       "method": "recent",
       "label": "Most popular, last 30 days",
       "users": 1180,
-      "recall": 0.0500288203323379,
-      "ndcg": 0.27358429798965483,
-      "hit": 0.7288135593220338,
-      "precision": 0.25525423728813557,
-      "coverage": 0.033221735771310844
+      "recall": 0.049734958616020196,
+      "ndcg": 0.2734424182955171,
+      "hit": 0.7271186440677966,
+      "precision": 0.25508474576271184,
+      "coverage": 0.03296420293587433
     },
     {
       "method": "itemcf",
@@ -73,11 +73,11 @@
       "method": "two_stage",
       "label": "Two-stage: retrieve + rerank",
       "users": 1180,
-      "recall": 0.065732233442323,
-      "ndcg": 0.29171380168365585,
-      "hit": 0.7677966101694915,
-      "precision": 0.26533898305084747,
-      "coverage": 0.22302343548802472
+      "recall": 0.0637172635884638,
+      "ndcg": 0.2900167856789778,
+      "hit": 0.7771186440677966,
+      "precision": 0.261864406779661,
+      "coverage": 0.21040432655163532
     }
   ],
   "retrieval": [
@@ -85,13 +85,13 @@
       "source": "popular",
       "label": "Most popular (baseline)",
       "n": 50,
-      "recall": 0.14307824611775005
+      "recall": 0.14309243375192715
     },
     {
       "source": "recent",
       "label": "Most popular, last 30 days",
       "n": 50,
-      "recall": 0.16073549706154974
+      "recall": 0.16068819998505207
     },
     {
       "source": "itemcf",
@@ -115,7 +115,7 @@
       "source": "union",
       "label": "All five combined",
       "n": 187,
-      "recall": 0.38833339675640455
+      "recall": 0.3883260257582899
     }
   ],
   "cold": [
@@ -154,62 +154,62 @@
     {
       "feature": "segment_share",
       "label": "Popular with people of the same age and gender",
-      "importance": 0.11762732290089624
+      "importance": 0.10054485943837652
     },
     {
       "feature": "item_age",
       "label": "Movie: years since release",
-      "importance": 0.09404594707303177
+      "importance": 0.0881142609663202
     },
     {
       "feature": "item_avg_rating",
       "label": "Movie: average rating",
-      "importance": 0.04078496492536457
+      "importance": 0.037885123871000015
     },
     {
       "feature": "item_log_pop",
       "label": "Movie: times rated",
-      "importance": 0.03182820351565954
-    },
-    {
-      "feature": "genre_affinity",
-      "label": "Genre match with the user's history",
-      "importance": 0.00964378676406727
+      "importance": 0.02184040920522229
     },
     {
       "feature": "svd_rank",
       "label": "Rank in SVD",
-      "importance": 0.008891913659268447
+      "importance": 0.012892236312310457
     },
     {
       "feature": "user_days_active",
       "label": "User: days since first rating",
-      "importance": 0.007927880432681111
+      "importance": 0.010901966877608693
     },
     {
-      "feature": "ease_rank",
-      "label": "Rank in EASE",
-      "importance": 0.00782224280996191
+      "feature": "ease_score",
+      "label": "EASE score",
+      "importance": 0.01055738020274985
+    },
+    {
+      "feature": "svd_score",
+      "label": "SVD score",
+      "importance": 0.006248183789414524
     },
     {
       "feature": "occupation",
       "label": "User: occupation",
-      "importance": 0.007782818876444858
+      "importance": 0.00556854525406586
+    },
+    {
+      "feature": "genre_affinity",
+      "label": "Genre match with the user's history",
+      "importance": 0.004470074645982591
     },
     {
       "feature": "itemcf_score",
       "label": "Item-to-item score",
-      "importance": 0.006716251519877092
+      "importance": 0.003562016791407163
     },
     {
-      "feature": "itemcf_rank",
-      "label": "Rank in item-to-item",
-      "importance": 0.0029817029703218256
-    },
-    {
-      "feature": "user_mainstream",
-      "label": "User: how mainstream their movies are",
-      "importance": 0.0024309590959067096
+      "feature": "n_sources",
+      "label": "Number of models proposing it",
+      "importance": 0.0033856059402888605
     }
   ],
   "settings": {
@@ -233,5 +233,5 @@
     "demo_neighbors": 20,
     "seed": 0
   },
-  "runtime_seconds": 63.4
+  "runtime_seconds": 80.1
 }
