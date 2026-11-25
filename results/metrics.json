@@ -1,0 +1,237 @@
+{
+  "generated_at": "2026-11-25T23:34+00:00",
+  "note": "",
+  "k": 10,
+  "dataset": {
+    "source": "MovieLens 1M",
+    "users": 6040,
+    "movies": 3706,
+    "ratings": 1000209,
+    "first": "2000-04-25",
+    "last": "2003-02-28"
+  },
+  "split": {
+    "validation_start": "2000-12-02",
+    "test_start": "2000-12-29",
+    "validation_users": 523,
+    "test_users": 1180,
+    "new_users": 29,
+    "test_movies_per_user": 81.19661016949152
+  },
+  "warm": [
+    {
+      "method": "popular",
+      "label": "Most popular (baseline)",
+      "users": 1180,
+      "recall": 0.03941795185954878,
+      "ndcg": 0.2538967781991909,
+      "hit": 0.6711864406779661,
+      "precision": 0.23872881355932202,
+      "coverage": 0.03785732680916817
+    },
+    {
+      "method": "recent",
+      "label": "Most popular, last 30 days",
+      "users": 1180,
+      "recall": 0.0500288203323379,
+      "ndcg": 0.27358429798965483,
+      "hit": 0.7288135593220338,
+      "precision": 0.25525423728813557,
+      "coverage": 0.033221735771310844
+    },
+    {
+      "method": "itemcf",
+      "label": "Item-to-item",
+      "users": 1180,
+      "recall": 0.040221640532799904,
+      "ndcg": 0.2563612613931539,
+      "hit": 0.6533898305084745,
+      "precision": 0.24279661016949153,
+      "coverage": 0.07828998197270153
+    },
+    {
+      "method": "svd",
+      "label": "Matrix factorisation (SVD)",
+      "users": 1180,
+      "recall": 0.04430647396913781,
+      "ndcg": 0.242516586834386,
+      "hit": 0.6745762711864407,
+      "precision": 0.2245762711864407,
+      "coverage": 0.23796033994334279
+    },
+    {
+      "method": "ease",
+      "label": "EASE",
+      "users": 1180,
+      "recall": 0.049386639176340646,
+      "ndcg": 0.25589373258516945,
+      "hit": 0.6949152542372882,
+      "precision": 0.23796610169491528,
+      "coverage": 0.24208086531032708
+    },
+    {
+      "method": "two_stage",
+      "label": "Two-stage: retrieve + rerank",
+      "users": 1180,
+      "recall": 0.065732233442323,
+      "ndcg": 0.29171380168365585,
+      "hit": 0.7677966101694915,
+      "precision": 0.26533898305084747,
+      "coverage": 0.22302343548802472
+    }
+  ],
+  "retrieval": [
+    {
+      "source": "popular",
+      "label": "Most popular (baseline)",
+      "n": 50,
+      "recall": 0.14307824611775005
+    },
+    {
+      "source": "recent",
+      "label": "Most popular, last 30 days",
+      "n": 50,
+      "recall": 0.16073549706154974
+    },
+    {
+      "source": "itemcf",
+      "label": "Item-to-item",
+      "n": 100,
+      "recall": 0.20984526786469096
+    },
+    {
+      "source": "svd",
+      "label": "Matrix factorisation (SVD)",
+      "n": 100,
+      "recall": 0.23949477281164241
+    },
+    {
+      "source": "ease",
+      "label": "EASE",
+      "n": 100,
+      "recall": 0.250438684268404
+    },
+    {
+      "source": "union",
+      "label": "All five combined",
+      "n": 187,
+      "recall": 0.38833339675640455
+    }
+  ],
+  "cold": [
+    {
+      "method": "popular",
+      "label": "Most popular (baseline)",
+      "users": 29,
+      "recall": 0.05765970112234631,
+      "ndcg": 0.5458318788669156,
+      "hit": 0.9655172413793104,
+      "precision": 0.5241379310344827,
+      "coverage": 0.0025753283543651817
+    },
+    {
+      "method": "recent",
+      "label": "Most popular, last 30 days",
+      "users": 29,
+      "recall": 0.059576495870679556,
+      "ndcg": 0.5566505027866728,
+      "hit": 0.9655172413793104,
+      "precision": 0.5344827586206897,
+      "coverage": 0.0025753283543651817
+    },
+    {
+      "method": "segment",
+      "label": "Popular with similar people",
+      "users": 29,
+      "recall": 0.06352286469514563,
+      "ndcg": 0.5835289703080039,
+      "hit": 0.9655172413793104,
+      "precision": 0.5620689655172414,
+      "coverage": 0.007725985063095545
+    }
+  ],
+  "importance": [
+    {
+      "feature": "segment_share",
+      "label": "Popular with people of the same age and gender",
+      "importance": 0.11762732290089624
+    },
+    {
+      "feature": "item_age",
+      "label": "Movie: years since release",
+      "importance": 0.09404594707303177
+    },
+    {
+      "feature": "item_avg_rating",
+      "label": "Movie: average rating",
+      "importance": 0.04078496492536457
+    },
+    {
+      "feature": "item_log_pop",
+      "label": "Movie: times rated",
+      "importance": 0.03182820351565954
+    },
+    {
+      "feature": "genre_affinity",
+      "label": "Genre match with the user's history",
+      "importance": 0.00964378676406727
+    },
+    {
+      "feature": "svd_rank",
+      "label": "Rank in SVD",
+      "importance": 0.008891913659268447
+    },
+    {
+      "feature": "user_days_active",
+      "label": "User: days since first rating",
+      "importance": 0.007927880432681111
+    },
+    {
+      "feature": "ease_rank",
+      "label": "Rank in EASE",
+      "importance": 0.00782224280996191
+    },
+    {
+      "feature": "occupation",
+      "label": "User: occupation",
+      "importance": 0.007782818876444858
+    },
+    {
+      "feature": "itemcf_score",
+      "label": "Item-to-item score",
+      "importance": 0.006716251519877092
+    },
+    {
+      "feature": "itemcf_rank",
+      "label": "Rank in item-to-item",
+      "importance": 0.0029817029703218256
+    },
+    {
+      "feature": "user_mainstream",
+      "label": "User: how mainstream their movies are",
+      "importance": 0.0024309590959067096
+    }
+  ],
+  "settings": {
+    "val_quantile": 0.8,
+    "test_quantile": 0.9,
+    "k": 10,
+    "recent_days": 30,
+    "segment_days": 180,
+    "itemcf_neighbors": 100,
+    "svd_factors": 64,
+    "ease_lambda": 300.0,
+    "retrieval_n": {
+      "popular": 50,
+      "recent": 50,
+      "itemcf": 100,
+      "svd": 100,
+      "ease": 100
+    },
+    "max_train_rows": 600000,
+    "demo_movies": 1500,
+    "demo_neighbors": 20,
+    "seed": 0
+  },
+  "runtime_seconds": 63.4
+}
