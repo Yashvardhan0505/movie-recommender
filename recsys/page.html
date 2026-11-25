@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What to watch next: a two-stage movie recommender</title>
+<meta name="description" content="{{lead}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --paper: #f3f4f8;
+  --panel: #ffffff;
+  --ink: #1b1e36;
+  --muted: #555a72;
+  --rule: #d7dae5;
+  --accent: #5a3fd1;
+  --accent-text: #4a30bf;
+  --ticket: #e9e5fb;
+  --perf: #b3a7ef;
+  --bar: #7d8193;
+  --tip-bg: #1b1e36;
+  --tip-ink: #f3f4f8;
+  --s-1: 0.875rem;
+  --s0: 1.0625rem;
+  --s1: 1.3125rem;
+  --s2: 1.75rem;
+  --s3: 2.75rem;
+  --s4: clamp(3.5rem, 10vw, 7.5rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14162b;
+    --panel: #1c1f38;
+    --ink: #e9eaf4;
+    --muted: #a7abc4;
+    --rule: #30345a;
+    --accent: #9884f3;
+    --accent-text: #b4a7f8;
+    --ticket: #25234b;
+    --perf: #554e9c;
+    --bar: #73778e;
+    --tip-bg: #e9eaf4;
+    --tip-ink: #14162b;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--paper); color: var(--ink); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: "Archivo", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--s0);
+  line-height: 1.55;
+}
+h1, h2, h3, p { margin: 0; }
+a { color: var(--accent-text); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.wrap { max-width: 70rem; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+h1, h2 { font-weight: 800; font-stretch: 62%; line-height: 0.9; letter-spacing: -0.01em; }
+h1 { font-size: var(--s4); }
+h2 { font-size: var(--s3); }
+h3 { font-size: var(--s1); font-weight: 700; font-stretch: 80%; line-height: 1.2; }
+.muted { color: var(--muted); }
+
+/* Opening */
+.hero { padding-top: clamp(2.5rem, 7vw, 5.5rem); }
+.banner {
+  display: inline-block; margin-bottom: 2rem; padding: 0.5rem 0.875rem;
+  border: 1px solid var(--accent); border-radius: 4px; font-size: var(--s-1); max-width: 46em;
+}
+.hero .lead { margin-top: 1.5rem; font-size: var(--s1); line-height: 1.45; max-width: 34em; }
+.hero .links { margin-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+
+/* Demo */
+.demo {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 5vw, 4.5rem); align-items: start;
+}
+.demo h2 { margin-bottom: 0.75rem; }
+.hint { color: var(--muted); max-width: 30em; }
+.field-label { display: block; margin: 1.5rem 0 0.375rem; font-size: var(--s-1); font-weight: 600; }
+.combo { position: relative; }
+#search {
+  width: 100%; font: inherit; color: inherit; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 0.625rem 0.75rem;
+}
+#search:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent); }
+#matches {
+  position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 4px);
+  margin: 0; padding: 0.25rem; list-style: none; max-height: 20rem; overflow: auto;
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 6px;
+  box-shadow: 0 8px 24px rgb(20 22 43 / 0.14);
+}
+#matches li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0.625rem; border-radius: 4px; cursor: pointer; }
+#matches li[aria-selected="true"], #matches li:hover { background: var(--ticket); }
+#matches .y { color: var(--muted); font-variant-numeric: tabular-nums; }
+.chips { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chips:empty { display: none; }
+.chips button {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 0.625rem 0.375rem 0.875rem;
+  font: inherit; font-size: var(--s-1); color: var(--ink); background: var(--ticket);
+  border: 0; border-radius: 999px; cursor: pointer; text-align: left;
+}
+.chips .x { font-size: 1.15em; line-height: 1; color: var(--muted); }
+.chips button:hover .x { color: var(--ink); }
+.quick { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.quick button {
+  font: inherit; font-size: var(--s-1); color: var(--ink); background: transparent;
+  border: 1px solid var(--rule); border-radius: 999px; padding: 0.375rem 0.875rem; cursor: pointer;
+}
+.quick button:hover { border-color: var(--accent); }
+.text-button {
+  margin-top: 1.25rem; padding: 0; font: inherit; font-size: var(--s-1); color: var(--accent-text);
+  background: none; border: 0; text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer;
+}
+.demo-note { margin-top: 1.25rem; font-size: var(--s-1); color: var(--muted); max-width: 36em; }
+.list-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 0.75rem 1.5rem; margin-bottom: 1rem; min-height: 3.5rem; }
+.list-head h3 { font-size: var(--s2); font-weight: 800; font-stretch: 62%; line-height: 1; }
+.segment { display: flex; flex-wrap: wrap; gap: 1rem; }
+.segment[hidden] { display: none; }
+.segment label { display: grid; gap: 0.25rem; font-size: var(--s-1); color: var(--muted); }
+.segment select {
+  font: inherit; font-size: var(--s-1); color: var(--ink); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 0.375rem 0.5rem;
+}
+
+/* The recommendations: a roll of numbered tickets */
+.tickets { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.ticket {
+  --stub: 3.5rem;
+  --notch: 0.5rem;
+  display: grid; grid-template-columns: var(--stub) minmax(0, 1fr);
+  background: var(--ticket); border-radius: 6px;
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at var(--stub) 0, #0000 97%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at var(--stub) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at var(--stub) 0, #0000 97%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at var(--stub) 100%, #0000 97%, #000) bottom / 100% 51% no-repeat;
+}
+.stub {
+  display: grid; place-items: center; border-right: 2px dashed var(--perf);
+  font-size: var(--s2); font-weight: 800; font-stretch: 62%; color: var(--accent-text); font-variant-numeric: tabular-nums;
+}
+.tbody { padding: 0.625rem 1rem 0.6875rem; min-width: 0; }
+.ttitle { font-size: var(--s1); font-weight: 700; font-stretch: 80%; line-height: 1.2; }
+.tyear { font-size: var(--s-1); font-weight: 400; font-stretch: 100%; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tmeta { display: flex; flex-wrap: wrap; gap: 0.125rem 1rem; margin-top: 0.125rem; font-size: var(--s-1); }
+.tgenres { color: var(--muted); }
+.twhy b { font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) {
+  .ticket.is-new { animation: dispense 360ms cubic-bezier(0.2, 0.7, 0.3, 1) both; animation-delay: calc(var(--i) * 30ms); }
+}
+@keyframes dispense { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* Results */
+.results, .how { margin-top: clamp(4.5rem, 10vw, 8rem); }
+.results > h2, .how > h2 { margin-bottom: 1rem; }
+.results > p { max-width: 40em; }
+.block { margin-top: 3.25rem; }
+.block > h3 { margin-bottom: 0.375rem; }
+.block > p { color: var(--muted); max-width: 40em; margin-bottom: 1.25rem; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 4rem; }
+.chart { display: grid; align-items: center; column-gap: 1rem; row-gap: 0.25rem; }
+.chart.single { grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr); }
+.chart.multiples { grid-template-columns: minmax(8rem, 15rem) minmax(0, 1fr) minmax(0, 1fr); column-gap: 1.75rem; }
+.chart .head { padding-bottom: 0.375rem; margin-bottom: 0.25rem; border-bottom: 1px solid var(--rule); font-size: var(--s-1); color: var(--muted); }
+.chart .label { font-size: var(--s-1); line-height: 1.25; }
+.chart .label.is-accent { font-weight: 700; }
+.cell { display: flex; align-items: center; gap: 0.5rem; min-height: 1.875rem; }
+.bar { display: block; flex: none; height: 0.75rem; min-width: 2px; width: calc((100% - 4rem) * var(--f)); background: var(--bar); border-radius: 0 4px 4px 0; }
+.track.is-accent .bar { background: var(--accent); }
+.val { font-size: var(--s-1); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.track.is-accent .val { font-weight: 700; }
+.numbers { margin-top: 1rem; }
+.numbers summary { width: max-content; font-size: var(--s-1); color: var(--accent-text); cursor: pointer; }
+.scroll { margin-top: 0.75rem; overflow-x: auto; }
+table { border-collapse: collapse; font-size: var(--s-1); }
+th, td { padding: 0.375rem 1.25rem 0.375rem 0; border-bottom: 1px solid var(--rule); text-align: left; white-space: nowrap; }
+thead th { font-weight: 600; color: var(--muted); }
+tbody th { font-weight: 400; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+code { font-size: 0.92em; }
+.tip {
+  position: fixed; z-index: 20; left: 0; top: 0; pointer-events: none; max-width: 17rem;
+  padding: 0.5rem 0.625rem; border-radius: 4px; background: var(--tip-bg); color: var(--tip-ink);
+  font-size: var(--s-1); line-height: 1.4; white-space: pre-line; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+}
+.tip[hidden] { display: none; }
+.tip::first-line { font-weight: 700; }
+
+/* How it works */
+.how > p { max-width: 40em; }
+.steps { list-style: none; margin: 2.25rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.5rem 2rem; counter-reset: step; }
+.steps li { counter-increment: step; padding-top: 0.875rem; border-top: 2px solid var(--ink); }
+.steps li::before {
+  content: counter(step); display: block; margin-bottom: 0.625rem;
+  font-size: var(--s3); font-weight: 800; font-stretch: 62%; line-height: 0.9; color: var(--accent-text);
+}
+.steps h3 { margin-bottom: 0.375rem; }
+.steps p { font-size: var(--s-1); }
+
+footer { margin-top: clamp(4.5rem, 10vw, 8rem); padding-block: 2rem 3rem; border-top: 1px solid var(--rule); font-size: var(--s-1); color: var(--muted); }
+footer p { max-width: 62em; }
+footer p + p { margin-top: 0.5rem; }
+
+@media (max-width: 960px) {
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .demo, .pair { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .chart.single { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+  .chart.single .label { margin-top: 0.625rem; }
+  .chart.multiples { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 1.25rem; row-gap: 0; }
+  .chart.multiples .head:first-child { display: none; }
+  .chart.multiples .label { grid-column: 1 / -1; margin-top: 0.625rem; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .ticket { --stub: 2.75rem; }
+}
+</style>
+</head>
+<body>
+<header class="hero wrap">
+  {{banner}}
+  <h1>What to watch next</h1>
+  <p class="lead">{{lead}}</p>
+  <p class="links">{{repo_link}} <a href="#results">How it's measured</a></p>
+</header>
+
+<main>
+<section class="demo wrap" aria-labelledby="try">
+  <div class="picker">
+    <h2 id="try">Try it</h2>
+    <p class="hint">Pick a few movies you like. The list updates with every pick.</p>
+    <label class="field-label" for="search">Find a movie</label>
+    <div class="combo">
+      <input id="search" type="search" role="combobox" aria-expanded="false" aria-controls="matches"
+             aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search {{n_demo}} titles">
+      <ul id="matches" role="listbox" aria-label="Matching movies" hidden></ul>
+    </div>
+    <ul class="chips" id="picked" aria-label="Your picks"></ul>
+    <div id="quick-wrap">
+      <p class="field-label" id="quick-label">Or start with one of these</p>
+      <div class="quick" id="quick" role="group" aria-labelledby="quick-label"></div>
+    </div>
+    <button type="button" class="text-button" id="clear" hidden>Clear picks</button>
+    <noscript><p class="demo-note">The demo needs JavaScript. The results further down don't.</p></noscript>
+  </div>
+  <div class="recs">
+    <div class="list-head">
+      <h3 id="list-title">Popular with people like you</h3>
+      <div class="segment" id="segment">
+        <label>Age group <select id="age"></select></label>
+        <label>Gender <select id="gender"><option value="any">Any</option><option value="F">Women</option><option value="M">Men</option></select></label>
+      </div>
+    </div>
+    <ol class="tickets" id="tickets" aria-labelledby="list-title"></ol>
+    <p class="demo-note">{{demo_note}}</p>
+    <p class="sr" id="status" aria-live="polite"></p>
+  </div>
+</section>
+
+<section class="results wrap" id="results" aria-labelledby="results-title">
+  <h2 id="results-title">How well does it work?</h2>
+  <p>{{results_lead}}</p>
+
+  <div class="block">
+    <h3>Returning users</h3>
+    <p>Higher is better for both. Hover or tab to a bar for details.</p>
+    {{warm_chart}}
+    {{warm_table}}
+  </div>
+
+  <div class="pair">
+    <div class="block">
+      <h3>Stage 1: the shortlist</h3>
+      <p>{{retrieval_lead}}</p>
+      {{retrieval_chart}}
+      {{retrieval_table}}
+    </div>
+    <div class="block">
+      <h3>New users, no history</h3>
+      <p>{{cold_lead}}</p>
+      {{cold_chart}}
+      {{cold_table}}
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>What the reranker relies on</h3>
+    <p>{{importance_lead}}</p>
+    {{importance_chart}}
+    {{importance_table}}
+  </div>
+</section>
+
+<section class="how wrap" aria-labelledby="how-title">
+  <h2 id="how-title">How it works</h2>
+  <p>{{dataset_line}}</p>
+  <ol class="steps">
+    <li><h3>Split by time</h3><p>{{step_split}}</p></li>
+    <li><h3>Shortlist with five models</h3><p>{{step_shortlist}}</p></li>
+    <li><h3>Rerank the shortlist</h3><p>{{step_rerank}}</p></li>
+    <li><h3>Start new users somewhere sensible</h3><p>{{step_new}}</p></li>
+  </ol>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>Data: MovieLens 1M from GroupLens Research at the University of Minnesota. F. Maxwell Harper and Joseph A. Konstan, “The MovieLens Datasets: History and Context”, ACM Transactions on Interactive Intelligent Systems 5(4), 2015. This project isn't endorsed by GroupLens.</p>
+  <p>The ratings aren't stored here. The build downloads them from GroupLens and publishes only movie titles and summary statistics.{{repo_footer}} Built {{built}}.</p>
+</footer>
+
+<script id="demo-data" type="application/json">{{data}}</script>
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+
+  // Tooltips for the charts (they work without the demo data too)
+  const tip = document.createElement("div");
+  tip.className = "tip";
+  tip.hidden = true;
+  document.body.append(tip);
+  const place = (el, x, y) => {
+    tip.textContent = el.dataset.tip;
+    tip.hidden = false;
+    const box = tip.getBoundingClientRect();
+    let left = x + 14;
+    let top = y - box.height - 12;
+    if (left + box.width > innerWidth - 8) left = x - box.width - 14;
+    if (top < 8) top = y + 20;
+    tip.style.transform = `translate(${Math.max(8, left)}px, ${top}px)`;
+  };
+  for (const el of document.querySelectorAll("[data-tip]")) {
+    el.addEventListener("pointermove", (e) => place(el, e.clientX, e.clientY));
+    el.addEventListener("pointerleave", () => { tip.hidden = true; });
+    el.addEventListener("focus", () => { const r = el.getBoundingClientRect(); place(el, r.left + 24, r.top); });
+    el.addEventListener("blur", () => { tip.hidden = true; });
+  }
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") tip.hidden = true; });
+
+  // The demo: item-to-item recommendations from the movies you pick
+  const D = JSON.parse($("demo-data").textContent);
+  const movies = D.movies; // [MovieLens id, title, year, genres, times rated], most rated first
+  const byId = new Map(movies.map((m, i) => [m[0], i]));
+  const fold = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const keys = movies.map((m) => fold(m[1]));
+  const bare = keys.map((k) => k.replace(/^(the|a|an) /, ""));
+  const search = $("search"), list = $("matches"), picked = $("picked"), quick = $("quick");
+  const quickWrap = $("quick-wrap"), clear = $("clear"), tickets = $("tickets"), heading = $("list-title");
+  const segment = $("segment"), age = $("age"), gender = $("gender"), status = $("status");
+  let picks = [];
+  let matches = [];
+  let active = -1;
+  let shown = [];
+  let first = true;
+
+  for (const [code, name] of D.ages) age.add(new Option(name, String(code)));
+  age.value = "25";
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+
+  function find(query) {
+    const q = fold(query.trim());
+    if (!q) return [];
+    const starts = [], within = [];
+    for (let i = 0; i < movies.length && starts.length < 8; i++) {
+      if (picks.includes(i)) continue;
+      if (keys[i].startsWith(q) || bare[i].startsWith(q)) starts.push(i);
+      else if (keys[i].includes(q)) within.push(i);
+    }
+    return starts.concat(within).slice(0, 8);
+  }
+
+  function showMatches() {
+    list.replaceChildren(...matches.map((i, n) => {
+      const li = el("li");
+      li.id = `match-${i}`;
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", String(n === active));
+      li.append(el("span", "", movies[i][1]), el("span", "y", movies[i][2] ?? ""));
+      li.addEventListener("mousedown", (e) => { e.preventDefault(); pick(i); });
+      return li;
+    }));
+    const open = matches.length > 0;
+    list.hidden = !open;
+    search.setAttribute("aria-expanded", String(open));
+    if (open && active >= 0) {
+      search.setAttribute("aria-activedescendant", `match-${matches[active]}`);
+      list.children[active].scrollIntoView({ block: "nearest" });
+    } else {
+      search.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  function closeMatches() { matches = []; active = -1; showMatches(); }
+
+  search.addEventListener("input", () => {
+    matches = find(search.value);
+    active = matches.length ? 0 : -1;
+    showMatches();
+  });
+  search.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown" && matches.length) { active = (active + 1) % matches.length; showMatches(); e.preventDefault(); }
+    else if (e.key === "ArrowUp" && matches.length) { active = (active - 1 + matches.length) % matches.length; showMatches(); e.preventDefault(); }
+    else if (e.key === "Enter" && active >= 0) { pick(matches[active]); e.preventDefault(); }
+    else if (e.key === "Escape") closeMatches();
+  });
+  search.addEventListener("blur", closeMatches);
+
+  function pick(i) {
+    if (!picks.includes(i)) picks.push(i);
+    search.value = "";
+    closeMatches();
+    update();
+  }
+  function unpick(i) { picks = picks.filter((p) => p !== i); update(); }
+  clear.addEventListener("click", () => { picks = []; update(); search.focus(); });
+  age.addEventListener("change", update);
+  gender.addEventListener("change", update);
+
+  const segmentList = () => D.segments[`${gender.value}|${age.value}`] || [];
+
+  function recommend() {
+    const score = new Map(), why = new Map();
+    for (const i of picks) {
+      const nb = D.nb[i], ns = D.ns[i];
+      for (let t = 0; t < nb.length; t++) {
+        const j = nb[t];
+        if (picks.includes(j)) continue;
+        score.set(j, (score.get(j) || 0) + ns[t]);
+        if (!why.has(j)) why.set(j, []);
+        why.get(j).push([ns[t], i]);
+      }
+    }
+    const recs = [...score].sort((a, b) => b[1] - a[1] || a[0] - b[0]).slice(0, 10).map(([j]) => {
+      const w = why.get(j).sort((a, b) => b[0] - a[0]);
+      const because = [w[0][1]];
+      if (w.length > 1 && w[1][0] >= 0.6 * w[0][0]) because.push(w[1][1]);
+      return { i: j, because };
+    });
+    for (const j of segmentList()) { // obscure picks with few neighbours: top up from the segment list
+      if (recs.length >= 10) break;
+      if (!picks.includes(j) && !recs.some((r) => r.i === j)) recs.push({ i: j, because: [] });
+    }
+    return recs;
+  }
+
+  function ticket(rec, n, fresh) {
+    const m = movies[rec.i];
+    const li = el("li", fresh ? "ticket is-new" : "ticket");
+    li.style.setProperty("--i", n);
+    const stub = el("span", "stub", String(n + 1));
+    stub.setAttribute("aria-hidden", "true");
+    const body = el("div", "tbody");
+    const title = el("p", "ttitle", m[1]);
+    if (m[2]) title.append(" ", el("span", "tyear", String(m[2])));
+    const meta = el("p", "tmeta");
+    meta.append(el("span", "tgenres", m[3]));
+    if (rec.because.length) {
+      const why = el("span", "twhy", "Because you picked ");
+      rec.because.forEach((b, k) => { if (k) why.append(" and "); why.append(el("b", "", movies[b][1])); });
+      meta.append(why);
+    }
+    body.append(title, meta);
+    li.append(stub, body);
+    return li;
+  }
+
+  function update() {
+    picked.replaceChildren(...picks.map((i) => {
+      const li = el("li");
+      const b = el("button");
+      b.type = "button";
+      b.setAttribute("aria-label", `Remove ${movies[i][1]}`);
+      const x = el("span", "x", "×");
+      x.setAttribute("aria-hidden", "true");
+      b.append(el("span", "", movies[i][2] ? `${movies[i][1]} (${movies[i][2]})` : movies[i][1]), x);
+      b.addEventListener("click", () => unpick(i));
+      li.append(b);
+      return li;
+    }));
+    const left = D.quick.filter((i) => !picks.includes(i));
+    quick.replaceChildren(...left.map((i) => {
+      const b = el("button", "", movies[i][1]);
+      b.type = "button";
+      b.addEventListener("click", () => pick(i));
+      return b;
+    }));
+    quickWrap.hidden = left.length === 0 || picks.length >= 3;
+    clear.hidden = picks.length === 0;
+
+    const personal = picks.length > 0;
+    segment.hidden = personal;
+    heading.textContent = personal ? "Recommended for you" : "Popular with people like you";
+    const recs = personal ? recommend() : segmentList().slice(0, 10).map((i) => ({ i, because: [] }));
+    const before = new Set(shown);
+    tickets.replaceChildren(...recs.map((r, n) => ticket(r, n, !first && !before.has(r.i))));
+    shown = recs.map((r) => r.i);
+    status.textContent = personal
+      ? `${recs.length} recommendations from your ${picks.length === 1 ? "pick" : `${picks.length} picks`}`
+      : `${recs.length} movies popular with people like you`;
+    first = false;
+    try {
+      const url = picks.length ? `#picks=${picks.map((i) => movies[i][0]).join(",")}` : location.pathname + location.search;
+      history.replaceState(null, "", url);
+    } catch (err) { /* some file:// contexts refuse; the demo still works */ }
+  }
+
+  const saved = location.hash.match(/picks=([\d,]+)/);
+  if (saved) picks = saved[1].split(",").map(Number).map((id) => byId.get(id)).filter((i) => i !== undefined);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# MovieLens may not be redistributed: it's downloaded here on each machine
+data/
+# python -m recsys demo output
+preview/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
